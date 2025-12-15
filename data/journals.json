@@ -1,0 +1,8 @@
+[
+  {
+    "id": "default-1",
+    "name": "Human Studies",
+    "oaiEndpoint": "https://mijournals.com/index.php/Human_Studies/oai",
+    "active": true
+  }
+]
