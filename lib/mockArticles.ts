@@ -1,14 +1,16 @@
-export type Article = {
+export type MockArticle = {
   slug: string;
   title: string;
-  authors: { fullName: string; affiliation?: string }[];
+  authors: { fullName: string }[];
   journal: string;
   year: number;
-  doi?: string;
   topics: string[];
   abstract: string;
-  pdfUrl: string;
+  pdfUrl?: string;
 };
+
+// Backward compatibility alias
+export type Article = MockArticle;
 
 export const slugify = (input: string) =>
   input
@@ -19,7 +21,7 @@ export const slugify = (input: string) =>
     .replace(/^-+|-+$/g, "")
     .replace(/-{2,}/g, "-");
 
-const create = (title: string, data: Omit<Article, "slug" | "title">): Article => ({
+const create = (title: string, data: Omit<MockArticle, "slug" | "title">): MockArticle => ({
   title,
   slug: slugify(title),
   ...data,
@@ -39,7 +41,6 @@ export const mockArticles: MockArticle[] = [
     ],
     journal: "arXiv",
     year: 2017,
-    doi: "",
     topics: ["Sun'iy intellekt", "Transformers"],
     abstract:
       "Transformer arxitekturasi diqqat mexanizmlaridan foydalanib, takroriy va konvolyutsion qatlamlarga ehtiyojni yo‘q qiladi.",
