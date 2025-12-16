@@ -2,6 +2,9 @@ import Link from "next/link";
 import { extractTopics } from "@/lib/topics";
 import { getCachedArticles } from "@/lib/cache/articlesKV";
 
+// Force dynamic generation to avoid build-time KV access
+export const dynamic = 'force-dynamic';
+
 export default async function TopicsPage() {
   const { articles } = await getCachedArticles();
   const topics = extractTopics(articles).sort((a, b) => b.count - a.count);

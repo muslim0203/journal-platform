@@ -20,9 +20,10 @@ export default async function ArticlesIndexPage() {
       ) : (
         <div className="space-y-4">
           {articles.map((article) => (
-            <article
+            <Link
               key={article.slug}
-              className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+              href={`/articles/${article.slug}`}
+              className="block rounded-lg border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
             >
               <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
                 {article.title}
@@ -60,7 +61,7 @@ export default async function ArticlesIndexPage() {
                   </a>
                 )}
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       )}

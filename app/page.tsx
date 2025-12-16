@@ -2,6 +2,9 @@ import Link from "next/link";
 import { extractTopics, filterArticlesByTopic } from "@/lib/topics";
 import { getArticles } from "@/lib/cache/articlesKV";
 
+// Force dynamic generation to avoid build-time KV access
+export const dynamic = 'force-dynamic';
+
 export default async function Home({ searchParams }: { searchParams?: { topic?: string } }) {
   const articles = await getArticles();
   const topics = extractTopics(articles);
