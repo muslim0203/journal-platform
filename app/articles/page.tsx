@@ -1,16 +1,10 @@
 import Link from "next/link";
-import type { Article } from "@/lib/mockArticles";
+import { getArticles } from "@/lib/cache/articlesKV";
+
+export const dynamic = 'force-dynamic';
 
 export default async function ArticlesIndexPage() {
-  let articles: Article[] = [];
-  try {
-    const res = await fetch("/api/articles", { cache: "no-store" });
-    if (res.ok) {
-      articles = (await res.json()) as Article[];
-    }
-  } catch (err) {
-    console.error("Failed to load articles for /articles page", err);
-  }
+  const articles = await getArticles();
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8">

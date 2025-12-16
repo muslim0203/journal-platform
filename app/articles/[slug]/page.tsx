@@ -2,7 +2,7 @@ import Head from "next/head";
 import Script from "next/script";
 import type { Metadata } from "next";
 import { ArticleReaderShell } from "@/components/reader/ArticleReaderShell";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getCachedArticles } from "@/lib/cache/articlesKV";
 import type { Article } from "@/lib/mockArticles";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";

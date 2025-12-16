@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getStats } from "@/lib/cache/articlesKV";
 import { runFullHarvest } from "@/lib/harvest/runFullHarvest";
 
 async function runAction() {
@@ -9,7 +9,7 @@ async function runAction() {
 }
 
 export default async function CronPage() {
-  const { articles, lastUpdated } = await getCachedArticles();
+  const { count, lastUpdated } = await getStats();
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-8">
@@ -20,7 +20,7 @@ export default async function CronPage() {
 
       <div className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <p className="text-sm text-neutral-700 dark:text-neutral-200">
-          Keshdagi maqolalar: {articles.length}
+          Keshdagi maqolalar: {count}
         </p>
         <p className="text-sm text-neutral-500">Oxirgi yangilanish: {lastUpdated ?? "—"}</p>
       </div>

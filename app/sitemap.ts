@@ -1,5 +1,5 @@
 import { extractTopics } from "@/lib/topics";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getCachedArticles } from "@/lib/cache/articlesKV";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 

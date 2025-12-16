@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { harvestOjsArticles } from "@/lib/oai/harvestOjs";
+import { getArticles } from "@/lib/cache/articlesKV";
 
 export async function GET() {
   try {
-    const articles = await harvestOjsArticles({ limit: 100 });
+    const articles = await getArticles();
     return NextResponse.json(articles);
   } catch (err) {
     console.error("Articles API failed", err);
     return NextResponse.json([], { status: 500 });
   }
 }
-
 

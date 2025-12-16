@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getArticles } from "@/lib/cache/articlesKV";
 
 export async function GET() {
-  const cache = await getCachedArticles();
-  return NextResponse.json(cache.articles ?? []);
+  const articles = await getArticles();
+  return NextResponse.json(articles);
 }
 
 

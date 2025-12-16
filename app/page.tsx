@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { extractTopics, filterArticlesByTopic } from "@/lib/topics";
-import type { Article } from "@/lib/mockArticles";
-import { harvestOjsArticles } from "@/lib/oai/harvestOjs";
+import { getArticles } from "@/lib/cache/articlesKV";
 
 export default async function Home({ searchParams }: { searchParams?: { topic?: string } }) {
-  let articles: Article[] = [];
-  try {
-    articles = await harvestOjsArticles({ limit: 100 });
-  } catch (err) {
-    console.error("Failed to fetch articles:", err);
-  }
+  const articles = await getArticles();
   const topics = extractTopics(articles);
   const selectedTopic = searchParams?.topic ?? null;
 

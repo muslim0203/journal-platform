@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { extractTopics } from "@/lib/topics";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getCachedArticles } from "@/lib/cache/articlesKV";
 
 export default async function TopicsPage() {
   const { articles } = await getCachedArticles();

@@ -7,7 +7,7 @@ type CacheShape = {
   articles: Article[];
 };
 
-const memory: CacheShape = { lastUpdated: null, articles: [] };
+let memory: CacheShape = { lastUpdated: null, articles: [] };
 const cacheFile = path.join(process.cwd(), ".next", "cache", "articles.json");
 
 async function readFromDisk(): Promise<CacheShape | null> {
@@ -39,22 +39,34 @@ export async function getCachedArticles(): Promise<CacheShape> {
   if (memory.articles.length) return memory;
   const disk = await readFromDisk();
   if (disk) {
-    memory.articles = disk.articles;
-    memory.lastUpdated = disk.lastUpdated;
-    return memory;
+    memory = {
+      lastUpdated: disk.lastUpdated,
+      articles: disk.articles,
+    };
   }
   return memory;
 }
 
-export async function setCachedArticles(articles: Article[]) {
+export async function setCachedArticles(articles: Article[]): Promise<void> {
   const payload: CacheShape = {
     lastUpdated: new Date().toISOString(),
     articles,
   };
-  memory.articles = payload.articles;
-  memory.lastUpdated = payload.lastUpdated;
+  memory = payload;
   await writeToDisk(payload);
 }
 
+export async function getArticles(): Promise<Article[]> {
+  const cache = await getCachedArticles();
+  return cache.articles;
+}
 
+export async function getStats(): Promise<{ count: number; lastUpdated: string | null }> {
+  const cache = await getCachedArticles();
+  return { count: cache.articles.length, lastUpdated: cache.lastUpdated };
+}
+
+export async function setArticles(articles: Article[]): Promise<void> {
+  await setCachedArticles(articles);
+}
 

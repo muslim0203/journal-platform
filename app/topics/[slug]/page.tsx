@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { extractTopics, filterArticlesByTopic } from "@/lib/topics";
-import { getCachedArticles } from "@/lib/cache/articlesCache";
+import { getCachedArticles } from "@/lib/cache/articlesKV";
 
 export default async function TopicDetailPage({ params }: { params: { slug: string } }) {
   const { articles } = await getCachedArticles();
