@@ -77,3 +77,4 @@ export function MetadataSidebar({ article, onOpenCitation }: Props) {
   );
 }
 
+

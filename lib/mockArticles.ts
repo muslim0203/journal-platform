@@ -7,6 +7,7 @@ export type MockArticle = {
   topics: string[];
   abstract: string;
   pdfUrl?: string;
+  doi?: string;
 };
 
 // Backward compatibility alias

@@ -3,10 +3,11 @@ import Script from "next/script";
 import type { Metadata } from "next";
 import { ArticleReaderShell } from "@/components/reader/ArticleReaderShell";
 import { getCachedArticles } from "@/lib/cache/articlesCache";
+import type { Article } from "@/lib/mockArticles";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-async function getArticle(slug: string) {
+async function getArticle(slug: string): Promise<Article | null> {
   const { articles } = await getCachedArticles();
   return articles.find((a) => a.slug === slug) ?? null;
 }

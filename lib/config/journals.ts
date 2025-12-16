@@ -62,3 +62,4 @@ export async function updateJournal(id: string, data: Partial<Omit<JournalConfig
 }
 
 
+
