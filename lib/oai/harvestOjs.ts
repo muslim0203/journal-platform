@@ -92,13 +92,39 @@ function processRecord(rec: unknown, endpoint: string): Article | null {
 // Helper function to extract resumptionToken from parsed OAI response
 function extractResumptionToken(json: unknown): string | null {
   try {
-    const resumptionToken = json?.["OAI-PMH"]?.ListRecords?.resumptionToken;
-    if (!resumptionToken) return null;
+    // Type narrowing: check if json is an object
+    if (!json || typeof json !== "object") {
+      return null;
+    }
+    
+    const jsonObj = json as Record<string, unknown>;
+    const oaiPmh = jsonObj["OAI-PMH"];
+    
+    // Check if OAI-PMH exists and is an object
+    if (!oaiPmh || typeof oaiPmh !== "object") {
+      return null;
+    }
+    
+    const oaiPmhObj = oaiPmh as Record<string, unknown>;
+    const listRecords = oaiPmhObj.ListRecords;
+    
+    // Check if ListRecords exists and is an object
+    if (!listRecords || typeof listRecords !== "object") {
+      return null;
+    }
+    
+    const listRecordsObj = listRecords as Record<string, unknown>;
+    const resumptionToken = listRecordsObj.resumptionToken;
+    
+    if (!resumptionToken) {
+      return null;
+    }
     
     // Handle both string and object formats
     if (typeof resumptionToken === "string") {
       return resumptionToken.trim() || null;
     }
+    
     if (typeof resumptionToken === "object" && resumptionToken !== null) {
       const tokenObj = resumptionToken as Record<string, unknown>;
       const token = tokenObj["#text"] || tokenObj["@_token"] || tokenObj["token"];
@@ -106,6 +132,7 @@ function extractResumptionToken(json: unknown): string | null {
         return token.trim() || null;
       }
     }
+    
     return null;
   } catch {
     return null;
