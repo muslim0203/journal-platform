@@ -67,19 +67,38 @@ export async function harvestOjsArticles(options: OaiOptions = {}): Promise<Arti
       const yearMatch = (dates[0] || "").match(/(\d{4})/);
       const year = yearMatch ? parseInt(yearMatch[1], 10) : new Date().getFullYear();
 
+      const articleViewUrl = identifiers.find((i) => i.includes("/article/view/"));
       const pdfIdentifier =
         identifiers.find((i) => i.toLowerCase().endsWith(".pdf")) ??
         identifiers.find((i) => i.toLowerCase().includes(".pdf"));
 
-      const pdfUrl = pdfIdentifier && pdfIdentifier.startsWith("http") ? pdfIdentifier : "";
+      let pdfUrl = "";
+      if (pdfIdentifier && pdfIdentifier.startsWith("http")) {
+        pdfUrl = pdfIdentifier;
+      } else if (articleViewUrl && articleViewUrl.startsWith("http")) {
+        const match = articleViewUrl.match(/\/article\/view\/(\d+)/);
+        if (match) {
+          const articleId = match[1];
+          const baseUrl = articleViewUrl.split("/article/view/")[0];
+          pdfUrl = `${baseUrl}/article/view/${articleId}/${articleId}/0`;
+        } else {
+          pdfUrl = articleViewUrl;
+        }
+      }
+
+      const journalName = endpoint.includes("Human_Studies")
+        ? "Human Studies"
+        : endpoint.includes("biocontrol")
+        ? "Biocontrol & Biotech"
+        : "OJS Journal";
 
       articles.push({
         slug: slugify(title),
         title,
         authors: creators.map((fullName) => ({ fullName })),
-        journal: "OJS Journal",
+        journal: journalName,
         year,
-        doi: identifiers.find((i) => i.startsWith("10.")),
+        doi: identifiers.find((i) => typeof i === "string" && i.startsWith("10.")),
         topics: subjects.slice(0, 5),
         abstract: descs[0] || "",
         pdfUrl,

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -24,10 +25,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <header className="border-b bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:bg-neutral-900/80">
+          <nav className="mx-auto flex max-w-6xl items-center gap-6 text-sm font-medium text-neutral-800 dark:text-neutral-100">
+            <Link href="/" className="hover:text-blue-600">
+              Bosh sahifa
+            </Link>
+            <Link href="/articles/preview" className="hover:text-blue-600">
+              Maqolalar
+            </Link>
+          </nav>
+        </header>
+        <main>{children}</main>
       </body>
     </html>
   );
